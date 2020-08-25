@@ -48,7 +48,7 @@ exports.createUser = async (req, res, next) => {
 };
 
 // @desc    로그인
-// @route   POST /api/v1/users/login
+// @route   POST /api/v1/user/login
 // @request email, passwd
 // @response  success
 exports.login = async (req, res, next) => {
@@ -56,7 +56,7 @@ exports.login = async (req, res, next) => {
     let passwd = req.body.passwd;
 
     if (!email || !passwd) {
-        res.status(400).json();
+        res.status(400).json({ message: "둘다 적어야 됩니다." });
         return;
     }
 
@@ -70,7 +70,7 @@ exports.login = async (req, res, next) => {
         user_id = rows[0].id;
         const isMatch = await bcrypt.compare(passwd, hashedPasswd);
         if (isMatch == false) {
-            res.status(400).json();
+            res.status(400).json({ message: "비밀번호가 일치하지 않습니다." });
             return;
         }
     } catch (e) {
